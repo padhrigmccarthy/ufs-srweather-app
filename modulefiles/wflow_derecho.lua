@@ -5,7 +5,7 @@ on the CISL machine Derecho (Cray)
 
 whatis([===[Loads libraries for running the UFS SRW Workflow on Derecho ]===])
 
-load("ncarenv")
+load(pathJoin("ncarenv", os.getenv("ncarenv_ver") or "23.06"))
 
 append_path("MODULEPATH","/glade/work/epicufsrt/contrib/derecho/rocoto/modulefiles")
 load("rocoto")
