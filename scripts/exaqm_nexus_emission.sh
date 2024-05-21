@@ -169,21 +169,21 @@ if [ "${USE_GFS_SFC}" = "TRUE" ]; then
   ========================================================================
   Default Member with gfs_sfc -- Using MEGAN config from ${PARMdir}/nexus_config/cmaq_gfs_megan/*.rc
       USE_GFS_SFC: \"${USE_GFS_SFC}\"
-      FIRE_MEMBER_NAME: \"${FIRE_MEMBER_NAME}\"
+      FIRE_MEMBER_NAME: \"${FIRE_MEMBER_NAME:-UNSET}\"
   ========================================================================
 
   "
 
   cp ${PARMdir}/nexus_config/cmaq_gfs_megan/*.rc ${DATA}
 else
-  if [ "${FIRE_MEMBER_NAME}" = "ANTHRO_HTAP" ]; then
+  if [ "${FIRE_MEMBER_NAME:-UNSET}" = "ANTHRO_HTAP" ]; then
 
     print_info_msg "
 
     ========================================================================
     HTAP Anthro Member -- Using config from ${PARMdir}/nexus_config/cmaq_edgar/*.rc
         USE_GFS_SFC: \"${USE_GFS_SFC}\"
-        FIRE_MEMBER_NAME: \"${FIRE_MEMBER_NAME}\"
+        FIRE_MEMBER_NAME: \"${FIRE_MEMBER_NAME:-UNSET}\"
     ========================================================================
 
     "
@@ -195,7 +195,7 @@ else
     ========================================================================
     Default Member -- Using MERRA2 climatology config from ${PARMdir}/nexus_config/cmaq/*.rc
         USE_GFS_SFC: \"${USE_GFS_SFC}\"
-        FIRE_MEMBER_NAME: \"${FIRE_MEMBER_NAME}\"
+        FIRE_MEMBER_NAME: \"${FIRE_MEMBER_NAME:-UNSET}\"
     ========================================================================
 
     "
