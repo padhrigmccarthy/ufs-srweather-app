@@ -61,11 +61,17 @@ if [ "${ICS_OR_LBCS}" = "ICS" ]; then
     file_set="fcst"
   fi
   fcst_hrs=${TIME_OFFSET_HRS}
-  file_names=${EXTRN_MDL_FILES_ICS[@]}
+  # Paddy Changes Are Below
+  # file_names=${EXTRN_MDL_FILES_ICS[@]}
+  file_names_orig=${EXTRN_MDL_FILES_ICS[@]}
+  # End Paddy Changes
   if [ ${EXTRN_MDL_NAME} = FV3GFS ] || [ "${EXTRN_MDL_NAME}" == "GDAS" ] ; then
     file_type=$FV3GFS_FILE_FMT_ICS
   fi
-  input_file_path=${EXTRN_MDL_SOURCE_BASEDIR_ICS:-$EXTRN_MDL_SYSBASEDIR_ICS}
+  # Paddy Changes Are Below
+  # input_file_path=${EXTRN_MDL_SOURCE_BASEDIR_ICS:-$EXTRN_MDL_SYSBASEDIR_ICS}
+  input_file_path_orig=${EXTRN_MDL_SOURCE_BASEDIR_ICS:-$EXTRN_MDL_SYSBASEDIR_ICS}
+  # End Paddy Changes
 
 elif [ "${ICS_OR_LBCS}" = "LBCS" ]; then
   file_set="fcst"
@@ -77,11 +83,18 @@ elif [ "${ICS_OR_LBCS}" = "LBCS" ]; then
   fi
   last_time=$((TIME_OFFSET_HRS + FCST_LEN_HRS))
   fcst_hrs="${first_time} ${last_time} ${LBC_SPEC_INTVL_HRS}"
-  file_names=${EXTRN_MDL_FILES_LBCS[@]}
+  # Paddy Changes Are Below
+  # file_names=${EXTRN_MDL_FILES_LBCS[@]}
+  file_names_orig=${EXTRN_MDL_FILES_LBCS[@]}
+  # End Paddy Changes
+
   if [ ${EXTRN_MDL_NAME} = FV3GFS ] || [ "${EXTRN_MDL_NAME}" == "GDAS" ] ; then
     file_type=$FV3GFS_FILE_FMT_LBCS
   fi
-  input_file_path=${EXTRN_MDL_SOURCE_BASEDIR_LBCS:-$EXTRN_MDL_SYSBASEDIR_LBCS}
+  # Paddy Changes Are Below
+  # input_file_path=${EXTRN_MDL_SOURCE_BASEDIR_LBCS:-$EXTRN_MDL_SYSBASEDIR_LBCS}
+  input_file_path_orig=${EXTRN_MDL_SOURCE_BASEDIR_LBCS:-$EXTRN_MDL_SYSBASEDIR_LBCS}
+  # End Paddy Changes
 fi
 
 data_stores="${EXTRN_MDL_DATA_STORES}"
@@ -93,6 +106,44 @@ yyyymmdd=${yyyymmddhh:0:8}
 mm=${yyyymmddhh:4:2}
 dd=${yyyymmddhh:6:2}
 hh=${yyyymmddhh:8:2}
+
+# Paddy Changes Are Below
+# Reset the staged file names to match the date of the current cycle
+print_info_msg "$VERBOSE" "
+(paddy) Cycle date: \'${yyyymmddhh}\'."
+print_info_msg "$VERBOSE" "
+(paddy) Cycle mm: \'${mm}\'."
+print_info_msg "$VERBOSE" "
+(paddy) Cycle dd: \'${dd}\'."
+
+mmdd="${mm}${dd}"
+print_info_msg "$VERBOSE" "
+(paddy) Substituting MMDD into all LBCS and ICS filenames: \'${mmdd}\'."
+
+file_names_modified=()
+for file_name in "${file_names_orig[@]}"; do
+  # Substitute 'MMDD' with the month and day of the current cycle in each file_name
+  print_info_msg "$VERBOSE" "
+  (paddy) Original file name: \'${file_name}\'."
+  modified_file_name=$(echo "$file_name" | sed "s/MMDD/$mmdd/g")
+  print_info_msg "$VERBOSE" "
+  (paddy) Modifiled file name: \'${modified_file_name}\'."
+
+  # Add the modified file name to the new array
+  file_names+=("$modified_file_name")
+done
+print_info_msg "$VERBOSE" "
+(paddy) Original filenames: \'${file_names_orig}\'."
+print_info_msg "$VERBOSE" "
+(paddy) Modified filenames: \'${file_names}\'."
+
+# Reset the staged file path to match the date of the current cycle
+input_file_path=$(echo "$input_file_path_orig" | sed "s/20200816/2020$mmdd/g")
+print_info_msg "$VERBOSE" "
+(paddy) Original input path: \'${input_file_path_orig}\'."
+print_info_msg "$VERBOSE" "
+(paddy) Modified input path: \'${input_file_path}\'."
+# End Paddy Changes
 
 # Set to use the pre-defined data paths in the machine file (ush/machine/).
 PDYext=${yyyymmdd}
