@@ -9,7 +9,7 @@ platform:
   DOMAIN_PREGEN_BASEDIR: /glade/work/epicufsrt/contrib/UFS_SRW_data/develop/FV3LAM_pregen
   QUEUE_DEFAULT: main
   QUEUE_FCST: main 
-  QUEUE_HPSS: main
+  QUEUE_HPSS: develop
   RUN_CMD_FCST: mpiexec -n ${PE_MEMBER01} 
   RUN_CMD_POST: mpiexec -n $nprocs 
   RUN_CMD_PRDGEN: mpiexec -n $nprocs 
