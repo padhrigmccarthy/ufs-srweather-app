@@ -1,1 +1,0 @@
-./exaqm_fire_emission.sh.fire_members
