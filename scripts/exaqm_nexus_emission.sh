@@ -181,7 +181,7 @@ else
     print_info_msg "
 
     ========================================================================
-    HTAP Anthro Member -- Using config from ${PARMdir}/nexus_config/cmaq_edgar/*.rc
+    HTAP Anthro Member -- Using config from ${PARMdir}/nexus_config/cmaq_HTAP/*.rc
         USE_GFS_SFC: \"${USE_GFS_SFC}\"
         FIRE_MEMBER_NAME: \"${FIRE_MEMBER_NAME:-UNSET}\"
     ========================================================================
